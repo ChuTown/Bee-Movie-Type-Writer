@@ -47,4 +47,35 @@ async function gettingRandomBeeMovieTranscript() {
     }
 }
 
+function getUserInputLive() {
+    document.getElementById("textbox").addEventListener("input", function () {
+        let lengthOfInput = this.value.length;
+        let lengthOfSelected = selectedLines.length;
+
+        // Ensure selectedLines is not empty
+        if (!selectedLines) {
+            document.getElementById("textbox").style.backgroundColor = "lightcoral";
+            return;
+        }
+
+        let isMatching = true; // Assume it's matching initially
+
+        // Compare input with selectedLines
+        for (let i = 0; i < lengthOfInput; i++) {
+            if (this.value[i] !== selectedLines[i]) {
+                isMatching = false;
+                break;
+            }
+        }
+
+        // Update background color based on matching status
+        if (isMatching && lengthOfInput <= lengthOfSelected) {
+            document.getElementById("textbox").style.backgroundColor = "lightgreen";
+        } else {
+            document.getElementById("textbox").style.backgroundColor = "lightcoral";
+        }
+    });
+}
+
+getUserInputLive();
 

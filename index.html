@@ -3,6 +3,16 @@
     <head>
         <title>Matthew's Website</title>
         <link rel="stylesheet" href="styles.css"> 
+        <style>
+            .new-liner {
+                width: 100%; /* Make it take the full width of the container */
+                height: 4em; /* Make it twice as tall as the default */
+                resize: none; /* Prevent resizing if you want a fixed size */
+                overflow-y: auto; /* Add a scrollbar if the content exceeds the height */
+                font-size: 16px; /* Optional: Adjust font size for better readability */
+                line-height: 1.5; /* Optional: Adjust line spacing */
+            }
+        </style>
     </head>
 
     <h2>Matthew's first website</h2>
@@ -16,7 +26,7 @@
         <button onclick="dec()">Decrement</button>
     </div>
     
-    <p>How fast can you type? </p>
+    <p>How fast can you type 3 lines from the Bee Movie? </p>
   
     <div>
         <button class="script-button" onclick="displayBeeMovieScript()">Generate Script</button>
@@ -25,12 +35,13 @@
     <p id="script">Load Script...</p>    
     
     <div>
-        <input class = "new-liner" type="text" id="textbox" placeholder="Type Bee Movie script here...">
+        <textarea class="new-liner" id="textbox" placeholder="Type Bee Movie script here..."></textarea>
     </div>
 
     
+    <p id = "userTyped"></p>
 
     
     <script src="script.js"></script>
 </html>
-    
+
