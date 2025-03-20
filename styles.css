@@ -1,0 +1,80 @@
+/* Reset default margins and paddings */
+* {
+    margin: 0; /* Fixed issue: `margin: 10;` is incorrect */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    padding: 20px; /* Added padding for better spacing */
+}
+
+/* Button styling */
+button {
+    padding: 8px 15px; /* Increased padding for better button feel */
+    margin: 5px; /* Add space around buttons */
+    font-size: 16px;
+    border: 2px solid #4CAF50; /* Green border */
+    background-color: white;
+    color: #4CAF50;
+    border-radius: 5px;
+    cursor: pointer; /* Changes cursor to pointer when hovering */
+    transition: 0.3s; /* Smooth hover effect */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Make the text box larger */
+input[type="text"] {
+    width: 80%; /* Use percentage instead of a fixed width */
+    max-width: 600px; /* Prevent it from being too wide */
+    height: 40px;
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid #4CAF50; /* Green border */
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Ensures Increment & Decrement buttons stay on the same line */
+.button-group {
+    display: inline-block; /* Keeps buttons on the same line */
+    margin-bottom: 15px; /* Adds spacing before the next button */
+}
+
+/* Add spacing between Increment and Decrement buttons */
+.button-group button {
+    margin-right: 10px;
+}
+
+/* Make the Generate Script button appear on a new line */
+.script-button {
+    display: block;
+    margin-top: 15px;
+}
+
+
+/* Keep Increment & Decrement on the same line */
+.button-group {
+    display: inline-block; /* Keeps these buttons together */
+    margin-bottom: 15px; /* Space before the next button */
+}
+
+/* Ensure the Generate Script button starts on a new line */
+.script-button {
+    display: block; /* Forces a new line */
+    margin-top: 10px; /* Adds space above */
+    margin-bottom: 15px;
+}
+
+.new-liner {
+    margin-bottom: 15px;
+}
