@@ -18,6 +18,10 @@ function update() {
 async function displayBeeMovieScript() {
     let beeMovieScript = await gettingRandomBeeMovieTranscript(); 
     document.getElementById("script").textContent = beeMovieScript; 
+    
+    let textbox = document.getElementById("textbox");
+    textbox.value = ""; 
+    textbox.style.backgroundColor = "";
 }
 
 let selectedLines = "";
@@ -43,24 +47,32 @@ async function gettingRandomBeeMovieTranscript() {
     } 
     catch (error) {
         console.error('Error loading file:', error);
-        return "Error fetching the script."; // Handle fetch errors
+        return "Error fetching the script."; 
     }
 }
+
+let hasStarted = false; 
+let startTime;
+let timerInterval;
 
 function getUserInputLive() {
     document.getElementById("textbox").addEventListener("input", function () {
         let lengthOfInput = this.value.length;
         let lengthOfSelected = selectedLines.length;
 
-        // Ensure selectedLines is not empty
+        if (hasStarted == false && lengthOfInput > 0) {
+            hasStarted = true;
+            startTime = Date.now();
+            startTimer();
+        }
+
         if (!selectedLines) {
             document.getElementById("textbox").style.backgroundColor = "lightcoral";
             return;
         }
 
-        let isMatching = true; // Assume it's matching initially
+        let isMatching = true; 
 
-        // Compare input with selectedLines
         for (let i = 0; i < lengthOfInput; i++) {
             if (this.value[i] !== selectedLines[i]) {
                 isMatching = false;
@@ -68,13 +80,30 @@ function getUserInputLive() {
             }
         }
 
-        // Update background color based on matching status
+        // stop timer when input matches all of the selected lines
+        if (isMatching && lengthOfInput === lengthOfSelected) {
+            clearInterval(timerInterval);
+            document.getElementById("textbox").style.backgroundColor = "lightgreen";
+            alert("Congratulations! You have finished the script.");
+        } 
+
         if (isMatching && lengthOfInput <= lengthOfSelected) {
             document.getElementById("textbox").style.backgroundColor = "lightgreen";
         } else {
             document.getElementById("textbox").style.backgroundColor = "lightcoral";
         }
     });
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        let elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1); 
+        document.getElementById("timer").textContent = `Time: ${elapsedTime} seconds`;
+    }, 100); 
+}
+
+function countWords(str) {
+    return str.trim().split(/\s+/).length;
 }
 
 getUserInputLive();

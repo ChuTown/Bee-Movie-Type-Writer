@@ -5,12 +5,12 @@
         <link rel="stylesheet" href="styles.css"> 
         <style>
             .new-liner {
-                width: 100%; /* Make it take the full width of the container */
-                height: 4em; /* Make it twice as tall as the default */
-                resize: none; /* Prevent resizing if you want a fixed size */
-                overflow-y: auto; /* Add a scrollbar if the content exceeds the height */
-                font-size: 16px; /* Optional: Adjust font size for better readability */
-                line-height: 1.5; /* Optional: Adjust line spacing */
+                width: 100%; 
+                height: 4em; 
+                resize: none; 
+                overflow-y: auto; 
+                font-size: 16px; 
+                line-height: 1.5; 
             }
         </style>
     </head>
@@ -35,11 +35,11 @@
     <p id="script">Load Script...</p>    
     
     <div>
+        <p id="timer">Time: 0.0 seconds</p>
+        <p id="WPM">Rate: 0 words per minute</p>
         <textarea class="new-liner" id="textbox" placeholder="Type Bee Movie script here..."></textarea>
     </div>
 
-    
-    <p id = "userTyped"></p>
 
     
     <script src="script.js"></script>
