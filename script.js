@@ -23,13 +23,15 @@ function update() {
 
 async function displayBeeMovieScript() {
     resetTimer();
-    let beeMovieScript = await gettingRandomBeeMovieTranscript();
+    let beeMovieScript = await gettingRandomBeeMovieTranscript(); 
     document.getElementById("script").textContent = beeMovieScript;
 
     const textbox = document.getElementById("textbox");
-    textbox.value = "";
+    textbox.disabled = false; 
+    textbox.value = ""; 
     textbox.style.backgroundColor = "";
 }
+
 
 async function gettingRandomBeeMovieTranscript() {
     try {
@@ -78,9 +80,11 @@ function getUserInputLive() {
             }
         }
 
-        this.style.backgroundColor = isMatching && lengthOfInput <= lengthOfSelected
-            ? "lightgreen"
-            : "lightcoral";
+        if (isMatching && lengthOfInput <= lengthOfSelected) {
+            this.style.backgroundColor = "lightgreen";
+        } else {
+            this.style.backgroundColor = "lightcoral";
+        }
 
         if (continueToCalculateWordsPerMinute) {
             calculateWordsPerMinute();
@@ -90,6 +94,10 @@ function getUserInputLive() {
             continueToCalculateWordsPerMinute = false;
             clearInterval(timerInterval);
             calculateWordsPerMinute();
+        
+            const textbox = document.getElementById("textbox");
+            textbox.style.backgroundColor = "lightgreen";
+            textbox.disabled = true; 
         }
     });
 }
@@ -98,7 +106,7 @@ function startTimer() {
     timerInterval = setInterval(() => {
         const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         document.getElementById("timer").textContent = `Time: ${elapsedTime} seconds`;
-    }, 100); // 0.1 seconds
+    }, 100); 
 }
 
 function resetTimer() {
