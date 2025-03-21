@@ -1,13 +1,19 @@
-let c = 0
+let c = 0;
 const count = document.getElementById("count");
- 
+
+let hasStarted = false;
+let startTime;
+let timerInterval;
+let continueToCalculateWordsPerMinute = false;
+let selectedLines = "";
+
 function inc() {
-    c = c + 1;
+    c++;
     update();
 }
 
 function dec() {
-    c = c - 1;     
+    c--;
     update();
 }
 
@@ -16,90 +22,100 @@ function update() {
 }
 
 async function displayBeeMovieScript() {
-    let beeMovieScript = await gettingRandomBeeMovieTranscript(); 
-    document.getElementById("script").textContent = beeMovieScript; 
-    
-    let textbox = document.getElementById("textbox");
-    textbox.value = ""; 
+    resetTimer();
+    let beeMovieScript = await gettingRandomBeeMovieTranscript();
+    document.getElementById("script").textContent = beeMovieScript;
+
+    const textbox = document.getElementById("textbox");
+    textbox.value = "";
     textbox.style.backgroundColor = "";
 }
 
-let selectedLines = "";
 async function gettingRandomBeeMovieTranscript() {
     try {
-        let response = await fetch('beeScript.txt'); // Fetch the file
-        let data = await response.text(); // Convert to text
-        let lines = data.split("\n").filter(line => line.trim() !== ""); // Remove empty lines
+        const response = await fetch('beeScript.txt');
+        const data = await response.text();
+        const lines = data.split("\n").filter(line => line.trim() !== "");
 
-        let maxRange = lines.length; // Total number of lines
-        let maxStartIndex = maxRange - 3; // Prevent overflow
+        const maxRange = lines.length;
+        const maxStartIndex = maxRange - 3;
 
-        if (maxStartIndex < 0) {
-            return "Error: Not enough lines in the file."; // Handle small files
-        }
+        if (maxStartIndex < 0) return "Error: Not enough lines in the file.";
 
-        let startIndex = Math.floor(Math.random() * (maxStartIndex + 1)); // Ensure within boundaries
-        selectedLines = lines.slice(startIndex, startIndex + 3); // Get 5 consecutive lines 
-       
-        selectedLines = selectedLines.join(" ");
-        console.log(selectedLines);
+        const startIndex = Math.floor(Math.random() * (maxStartIndex + 1));
+        selectedLines = lines.slice(startIndex, startIndex + 3).join(" ");
+        console.log("Selected:", selectedLines);
         return selectedLines;
-    } 
-    catch (error) {
-        console.error('Error loading file:', error);
-        return "Error fetching the script."; 
+    } catch (error) {
+        console.error("Error loading file:", error);
+        return "Error fetching the script.";
     }
 }
 
-let hasStarted = false; 
-let startTime;
-let timerInterval;
-
 function getUserInputLive() {
     document.getElementById("textbox").addEventListener("input", function () {
-        let lengthOfInput = this.value.length;
-        let lengthOfSelected = selectedLines.length;
-
-        if (hasStarted == false && lengthOfInput > 0) {
-            hasStarted = true;
-            startTime = Date.now();
-            startTimer();
-        }
+        const input = this.value;
+        const lengthOfInput = input.length;
+        const lengthOfSelected = selectedLines.length;
 
         if (!selectedLines) {
-            document.getElementById("textbox").style.backgroundColor = "lightcoral";
+            this.style.backgroundColor = "lightcoral";
             return;
         }
 
-        let isMatching = true; 
+        if (!hasStarted && lengthOfInput > 0) {
+            hasStarted = true;
+            startTime = Date.now();
+            continueToCalculateWordsPerMinute = true;
+            startTimer();
+        }
 
+        let isMatching = true;
         for (let i = 0; i < lengthOfInput; i++) {
-            if (this.value[i] !== selectedLines[i]) {
+            if (input[i] !== selectedLines[i]) {
                 isMatching = false;
                 break;
             }
         }
 
-        // stop timer when input matches all of the selected lines
-        if (isMatching && lengthOfInput === lengthOfSelected) {
-            clearInterval(timerInterval);
-            document.getElementById("textbox").style.backgroundColor = "lightgreen";
-            alert("Congratulations! You have finished the script.");
-        } 
+        this.style.backgroundColor = isMatching && lengthOfInput <= lengthOfSelected
+            ? "lightgreen"
+            : "lightcoral";
 
-        if (isMatching && lengthOfInput <= lengthOfSelected) {
-            document.getElementById("textbox").style.backgroundColor = "lightgreen";
-        } else {
-            document.getElementById("textbox").style.backgroundColor = "lightcoral";
+        if (continueToCalculateWordsPerMinute) {
+            calculateWordsPerMinute();
+        }
+
+        if (isMatching && lengthOfInput === lengthOfSelected) {
+            continueToCalculateWordsPerMinute = false;
+            clearInterval(timerInterval);
+            calculateWordsPerMinute();
         }
     });
 }
 
 function startTimer() {
     timerInterval = setInterval(() => {
-        let elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1); 
+        const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
         document.getElementById("timer").textContent = `Time: ${elapsedTime} seconds`;
-    }, 100); 
+    }, 100); // 0.1 seconds
+}
+
+function resetTimer() {
+    hasStarted = false;
+    continueToCalculateWordsPerMinute = false;
+    clearInterval(timerInterval);
+    document.getElementById("timer").textContent = "Time: 0.0 seconds";
+    document.getElementById("WPM").textContent = "Rate: 0 words per minute";
+}
+
+function calculateWordsPerMinute() {
+    const elapsedTime = (Date.now() - startTime) / 1000;
+    if (elapsedTime > 0) {
+        const words = countWords(selectedLines);
+        const wordsPerMinute = Math.round(words / (elapsedTime / 60));
+        document.getElementById("WPM").textContent = `Rate: ${wordsPerMinute} words per minute`;
+    }
 }
 
 function countWords(str) {
@@ -107,4 +123,3 @@ function countWords(str) {
 }
 
 getUserInputLive();
-

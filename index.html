@@ -1,20 +1,11 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Matthew's Website</title>
-        <link rel="stylesheet" href="styles.css"> 
-        <style>
-            .new-liner {
-                width: 100%; 
-                height: 4em; 
-                resize: none; 
-                overflow-y: auto; 
-                font-size: 16px; 
-                line-height: 1.5; 
-            }
-        </style>
-    </head>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Matthew's Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <h2>Matthew's first website</h2>
     <p>I will be experimenting with functionalities you can make with JavaScript.</p>
     <p>First up, let's create a counter button, and a reset button.</p>
@@ -25,23 +16,18 @@
         <button onclick="inc()">Increment</button>
         <button onclick="dec()">Decrement</button>
     </div>
-    
-    <p>How fast can you type 3 lines from the Bee Movie? </p>
-  
-    <div>
-        <button class="script-button" onclick="displayBeeMovieScript()">Generate Script</button>
-    </div>
 
-    <p id="script">Load Script...</p>    
-    
+    <p>How fast can you type 3 lines from the Bee Movie?</p>
+    <button class="script-button" onclick="displayBeeMovieScript()">Generate Script</button>
+
+    <p id="script">Load Script...</p>
+
     <div>
         <p id="timer">Time: 0.0 seconds</p>
         <p id="WPM">Rate: 0 words per minute</p>
         <textarea class="new-liner" id="textbox" placeholder="Type Bee Movie script here..."></textarea>
     </div>
 
-
-    
     <script src="script.js"></script>
+</body>
 </html>
-
